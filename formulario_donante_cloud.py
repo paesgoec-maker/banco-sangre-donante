@@ -36,9 +36,27 @@ st.markdown("""
            background: #fff8f8; border-radius: 0 8px 8px 0;
            margin: 20px 0 10px; font-weight: 700; color: #7f0000; }
 /* Mayúsculas automáticas mientras se escribe */
-input[type="text"] { text-transform: uppercase !important; }
-textarea           { text-transform: uppercase !important; }
+input[type="text"],textarea { text-transform: uppercase !important; }
 </style>
+<script>
+(function(){
+  function aplicar(inp){
+    if(inp._uc) return;
+    inp._uc = true;
+    inp.setAttribute('autocapitalize','characters');
+    inp.addEventListener('input',function(){
+      var s=this.selectionStart, e=this.selectionEnd;
+      this.value=this.value.toUpperCase();
+      try{this.setSelectionRange(s,e);}catch(ex){}
+    });
+  }
+  function recorrer(){
+    document.querySelectorAll('input[type="text"],textarea').forEach(aplicar);
+  }
+  new MutationObserver(recorrer).observe(document.body,{childList:true,subtree:true});
+  recorrer();
+})();
+</script>
 """, unsafe_allow_html=True)
 
 st.markdown("""
