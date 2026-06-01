@@ -3,7 +3,6 @@ Formulario del Donante — Banco de Sangre Hospital Amazónico
 Desplegado en Streamlit Community Cloud
 """
 import streamlit as st
-import streamlit.components.v1 as components
 import datetime
 import json
 from supabase import create_client
@@ -18,17 +17,20 @@ SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase     = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-def tiu(label, key, **kwargs):
-    """Fuerza mayúsculas modificando session_state ANTES de renderizar el widget."""
-    if key in st.session_state and isinstance(st.session_state[key], str):
-        st.session_state[key] = st.session_state[key].upper()
-    return st.text_input(label, key=key, **kwargs)
-
 DEPARTAMENTOS = [
     "", "Amazonas", "Áncash", "Apurímac", "Arequipa", "Ayacucho", "Cajamarca",
     "Callao", "Cusco", "Huancavelica", "Huánuco", "Ica", "Junín", "La Libertad",
     "Lambayeque", "Lima", "Loreto", "Madre de Dios", "Moquegua", "Pasco",
     "Piura", "Puno", "San Martín", "Tacna", "Tumbes", "Ucayali"
+]
+
+# ── Claves de todos los campos de texto que deben ir en mayúsculas ──
+UC_KEYS = [
+    "c_nombres", "c_apellidos", "c_domicilio",
+    "c_ocup_otros", "c_ct_otros",
+    "c_rec_nom", "c_rec_ape",
+    "c_q1d",  "c_q3d",  "c_q8d",  "c_q9d",  "c_q10d",
+    "c_q11d", "c_q12d", "c_q13d", "c_q14d", "c_q16d",
 ]
 
 st.markdown("""
@@ -52,26 +54,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Forzar MAYÚSCULAS en el teclado del celular ──────────────
-# components.html SÍ ejecuta JS y puede acceder al DOM padre
-components.html("""
-<script>
-(function(){
-  function fijar(){
-    try {
-      var doc = window.parent.document;
-      doc.querySelectorAll('input[type="text"]').forEach(function(el){
-        el.setAttribute('autocapitalize','characters');
-        el.style.textTransform='uppercase';
-      });
-    } catch(e){}
-  }
-  fijar();
-  setInterval(fijar, 400);
-})();
-</script>
-""", height=0, scrolling=False)
-
 def ya_envio_hoy(dni):
     hoy = datetime.date.today().isoformat()
     res = supabase.table("donantes_cloud").select("id") \
@@ -92,8 +74,8 @@ if st.session_state.get("enviado"):
 st.markdown('<div class="seccion">Datos Personales</div>', unsafe_allow_html=True)
 c1, c2 = st.columns(2)
 with c1:
-    nombres          = tiu("Nombres completos *",  "c_nombres")
-    apellidos        = tiu("Apellidos *",           "c_apellidos")
+    nombres          = st.text_input("Nombres completos *",  key="c_nombres")
+    apellidos        = st.text_input("Apellidos *",           key="c_apellidos")
     dni              = st.text_input("DNI (8 dígitos) *", max_chars=8, key="c_dni")
     edad             = st.number_input("Edad *", min_value=18, max_value=65, value=None, step=1)
     sexo             = st.selectbox("Sexo *", ["", "Masculino", "Femenino"])
@@ -105,12 +87,12 @@ with c1:
                                       format="DD/MM/YYYY")
 with c2:
     grado_instruccion    = st.selectbox("Grado de instrucción", ["", "Primaria", "Secundaria", "Superior", "Master", "Doctorado"])
-    domicilio            = tiu("Domicilio actual",               "c_domicilio")
-    celular              = st.text_input("Celular (9 dígitos)",  max_chars=9, key="c_celular")
+    domicilio            = st.text_input("Domicilio actual",            key="c_domicilio")
+    celular              = st.text_input("Celular (9 dígitos)", max_chars=9, key="c_celular")
     ocupacion_op         = st.selectbox("Ocupación", ["", "Estudiante", "Empleado", "Independiente", "Ama de casa", "Otros"])
-    ocupacion_otros      = tiu("Especifique su ocupación",        "c_ocup_otros") if ocupacion_op == "Otros" else ""
+    ocupacion_otros      = st.text_input("Especifique su ocupación",         key="c_ocup_otros") if ocupacion_op == "Otros" else ""
     centro_trabajo_op    = st.selectbox("Centro de trabajo", ["", "Independiente", "Sector Público", "Sector Privado", "Otros"])
-    centro_trabajo_otros = tiu("Especifique su centro de trabajo","c_ct_otros")   if centro_trabajo_op == "Otros" else ""
+    centro_trabajo_otros = st.text_input("Especifique su centro de trabajo", key="c_ct_otros")   if centro_trabajo_op == "Otros" else ""
 
 ocupacion      = ocupacion_otros      if ocupacion_op      == "Otros" else ocupacion_op
 centro_trabajo = centro_trabajo_otros if centro_trabajo_op == "Otros" else centro_trabajo_op
@@ -123,8 +105,8 @@ receptor_nombres = receptor_apellidos = receptor_dni = ""
 if tipo_donacion == "Reposición":
     st.warning("Ingrese los datos del paciente receptor:")
     r1, r2, r3 = st.columns(3)
-    with r1: receptor_nombres   = tiu("Nombres del paciente",  "c_rec_nom")
-    with r2: receptor_apellidos = tiu("Apellidos del paciente","c_rec_ape")
+    with r1: receptor_nombres   = st.text_input("Nombres del paciente",   key="c_rec_nom")
+    with r2: receptor_apellidos = st.text_input("Apellidos del paciente",  key="c_rec_ape")
     with r3: receptor_dni       = st.text_input("DNI del paciente", max_chars=8, key="c_rec_dni")
 
 # ── CUESTIONARIO ─────────────────────────────────────────────
@@ -135,13 +117,13 @@ resp = {}
 
 resp["q1"] = st.radio("1. ¿Ha donado sangre anteriormente?", ["No", "Sí"], horizontal=True)
 if resp["q1"] == "Sí":
-    resp["q1_detalle"] = tiu("¿Hace cuánto tiempo fue su última donación?", "c_q1d")
+    resp["q1_detalle"] = st.text_input("¿Hace cuánto tiempo fue su última donación?", key="c_q1d")
 
 resp["q2"] = st.radio("2. ¿Donó sangre en los últimos tres meses?", ["No", "Sí"], horizontal=True)
 
 resp["q3"] = st.radio("3. ¿Está tomando o tomó algún medicamento en los últimos días?", ["No", "Sí"], horizontal=True)
 if resp["q3"] == "Sí":
-    resp["q3_detalle"] = tiu("¿Cuáles medicamentos?", "c_q3d")
+    resp["q3_detalle"] = st.text_input("¿Cuáles medicamentos?", key="c_q3d")
 
 if sexo == "Femenino":
     q_fem = st.date_input("4. Fecha de última menstruación:", value=None, format="DD/MM/YYYY")
@@ -156,47 +138,62 @@ resp["q6"] = st.radio("6. ¿Ha tenido fiebre, dolor de cabeza o enfermedad en la
 
 resp["q8"] = st.radio("8. ¿Ha sido operado en los últimos seis meses?", ["No", "Sí"], horizontal=True)
 if resp["q8"] == "Sí":
-    resp["q8_detalle"] = tiu("¿De qué fue operado?", "c_q8d")
+    resp["q8_detalle"] = st.text_input("¿De qué fue operado?", key="c_q8d")
 
 resp["q9"] = st.radio("9. ¿Ha recibido sangre, trasplante de órgano o tejidos?", ["No", "Sí"], horizontal=True)
 if resp["q9"] == "Sí":
-    resp["q9_detalle"] = tiu("¿Qué recibió y hace cuánto tiempo?", "c_q9d")
+    resp["q9_detalle"] = st.text_input("¿Qué recibió y hace cuánto tiempo?", key="c_q9d")
 
 resp["q10"] = st.radio("10. ¿En los últimos 12 meses se realizó tatuajes o punción de piel?", ["No", "Sí"], horizontal=True)
 if resp["q10"] == "Sí":
-    resp["q10_detalle"] = tiu("Especifique (tatuaje, arete, acupuntura, etc.):", "c_q10d")
+    resp["q10_detalle"] = st.text_input("Especifique (tatuaje, arete, acupuntura, etc.):", key="c_q10d")
 
 resp["q11"] = st.radio("11. ¿Recibió alguna vacuna en el último mes?", ["No", "Sí"], horizontal=True)
 if resp["q11"] == "Sí":
-    resp["q11_detalle"] = tiu("¿Cuál vacuna?", "c_q11d")
+    resp["q11_detalle"] = st.text_input("¿Cuál vacuna?", key="c_q11d")
 
 resp["q12"] = st.radio("12. ¿Tuvo contacto con persona portadora de alguna enfermedad contagiosa?", ["No", "Sí"], horizontal=True)
 if resp["q12"] == "Sí":
-    resp["q12_detalle"] = tiu("¿Qué enfermedad tenía la persona?", "c_q12d")
+    resp["q12_detalle"] = st.text_input("¿Qué enfermedad tenía la persona?", key="c_q12d")
 
 resp["q13"] = st.radio("13. ¿Ha viajado a zonas con paludismo, fiebre amarilla o leishmaniasis?", ["No", "Sí"], horizontal=True)
 if resp["q13"] == "Sí":
-    resp["q13_detalle"] = tiu("¿A qué zona específica viajó?", "c_q13d")
+    resp["q13_detalle"] = st.text_input("¿A qué zona específica viajó?", key="c_q13d")
 
 resp["q14"] = st.radio("14. ¿Padece alguna molestia que requiere control médico continuo?", ["No", "Sí"], horizontal=True)
 if resp["q14"] == "Sí":
-    resp["q14_detalle"] = tiu("¿Cuál molestia?", "c_q14d")
+    resp["q14_detalle"] = st.text_input("¿Cuál molestia?", key="c_q14d")
 
 resp["q15"] = st.radio("15. ¿Consume usted algún tipo de droga?", ["No", "Sí"], horizontal=True)
 
 resp["q16"] = st.radio("16. ¿Ha tenido alguna enfermedad de transmisión sexual?", ["No", "Sí"], horizontal=True)
 if resp["q16"] == "Sí":
-    resp["q16_detalle"] = tiu("¿Cuál enfermedad?", "c_q16d")
+    resp["q16_detalle"] = st.text_input("¿Cuál enfermedad?", key="c_q16d")
 
 resp["q17"] = st.radio("17. ¿Ha tenido múltiples parejas sexuales en los últimos 12 meses?", ["No", "Sí"], horizontal=True)
 resp["q18"] = st.radio("18. ¿Se ha realizado prueba de VIH/SIDA u otras enfermedades de transmisión sexual?", ["No", "Sí"], horizontal=True)
 resp["q19"] = st.radio("19. ¿Ha estado en prisión en el último año?", ["No", "Sí"], horizontal=True)
 resp["q20"] = st.radio("20. ¿Ha consumido bebidas alcohólicas en las últimas 24 horas?", ["No", "Sí"], horizontal=True)
 
+# ═══════════════════════════════════════════════════════════
+# CONVERSIÓN A MAYÚSCULAS — se hace AQUÍ, después de renderizar
+# TODOS los widgets. Si algún campo tiene minúsculas, se corrige
+# en session_state y se dispara un rerun para que el widget
+# muestre el valor corregido.
+# ═══════════════════════════════════════════════════════════
+_hay_minusculas = False
+for _k in UC_KEYS:
+    _v = st.session_state.get(_k, "")
+    if isinstance(_v, str) and _v != _v.upper():
+        st.session_state[_k] = _v.upper()
+        _hay_minusculas = True
+
+if _hay_minusculas:
+    st.rerun()
+
 # ── ENVÍO ────────────────────────────────────────────────────
 st.markdown("---")
 if st.button("✅ Enviar Formulario", type="primary", use_container_width=True):
-    # Validaciones
     errores = []
     if not nombres.strip():  errores.append("• Nombres completos es obligatorio")
     if not apellidos.strip(): errores.append("• Apellidos es obligatorio")
@@ -214,7 +211,6 @@ if st.button("✅ Enviar Formulario", type="primary", use_container_width=True):
                    "Si es un error, consulte al personal del banco de sangre.")
         st.stop()
 
-    # Normalizar todos los campos de texto a MAYÚSCULAS antes de guardar
     for k in list(resp.keys()):
         if k.endswith("_detalle") and isinstance(resp[k], str):
             resp[k] = resp[k].strip().upper()
