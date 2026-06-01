@@ -3,6 +3,7 @@ Formulario del Donante — Banco de Sangre Hospital Amazónico
 Desplegado en Streamlit Community Cloud
 """
 import streamlit as st
+import streamlit.components.v1 as components
 import datetime
 import json
 from supabase import create_client
@@ -50,6 +51,26 @@ st.markdown("""
   <p>Formulario previo de donación · Yarinacocha, Ucayali</p>
 </div>
 """, unsafe_allow_html=True)
+
+# ── Forzar MAYÚSCULAS en el teclado del celular ──────────────
+# components.html SÍ ejecuta JS y puede acceder al DOM padre
+components.html("""
+<script>
+(function(){
+  function fijar(){
+    try {
+      var doc = window.parent.document;
+      doc.querySelectorAll('input[type="text"]').forEach(function(el){
+        el.setAttribute('autocapitalize','characters');
+        el.style.textTransform='uppercase';
+      });
+    } catch(e){}
+  }
+  fijar();
+  setInterval(fijar, 400);
+})();
+</script>
+""", height=0, scrolling=False)
 
 def ya_envio_hoy(dni):
     hoy = datetime.date.today().isoformat()
