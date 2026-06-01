@@ -18,14 +18,10 @@ SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 supabase     = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def tiu(label, key, **kwargs):
-    """text_input Uppercase — convierte a mayúsculas en cada rerun (100% confiable en móvil)."""
-    if key not in st.session_state:
-        st.session_state[key] = ""
-    val = st.text_input(label, key=key, **kwargs)
-    if isinstance(val, str) and val != val.upper():
-        st.session_state[key] = val.upper()
-        st.rerun()
-    return st.session_state.get(key, "")
+    """Fuerza mayúsculas modificando session_state ANTES de renderizar el widget."""
+    if key in st.session_state and isinstance(st.session_state[key], str):
+        st.session_state[key] = st.session_state[key].upper()
+    return st.text_input(label, key=key, **kwargs)
 
 DEPARTAMENTOS = [
     "", "Amazonas", "Áncash", "Apurímac", "Arequipa", "Ayacucho", "Cajamarca",
