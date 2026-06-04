@@ -113,67 +113,68 @@ if tipo_donacion == "Reposición":
 st.markdown('<div class="seccion">Cuestionario de Selección</div>', unsafe_allow_html=True)
 st.info("Responda con sinceridad. Sus respuestas son confidenciales y protegen su salud.")
 
+# ── CUESTIONARIO CON KEYS EXPLÍCITAS (evita bug de estado en Streamlit) ──
 resp = {}
 
-resp["q1"] = st.radio("1. ¿Ha donado sangre anteriormente?", ["No", "Sí"], horizontal=True)
+resp["q1"] = st.radio("1. ¿Ha donado sangre anteriormente?", ["No", "Sí"], horizontal=True, key="cq1")
 if resp["q1"] == "Sí":
     resp["q1_detalle"] = st.text_input("¿Hace cuánto tiempo fue su última donación?", key="c_q1d")
 
-resp["q2"] = st.radio("2. ¿Donó sangre en los últimos tres meses?", ["No", "Sí"], horizontal=True)
+resp["q2"] = st.radio("2. ¿Donó sangre en los últimos tres meses?", ["No", "Sí"], horizontal=True, key="cq2")
 
-resp["q3"] = st.radio("3. ¿Está tomando o tomó algún medicamento en los últimos días?", ["No", "Sí"], horizontal=True)
+resp["q3"] = st.radio("3. ¿Está tomando o tomó algún medicamento en los últimos días?", ["No", "Sí"], horizontal=True, key="cq3")
 if resp["q3"] == "Sí":
     resp["q3_detalle"] = st.text_input("¿Cuáles medicamentos?", key="c_q3d")
 
 if sexo == "Femenino":
-    q_fem = st.date_input("4. Fecha de última menstruación:", value=None, format="DD/MM/YYYY")
+    q_fem = st.date_input("4. Fecha de última menstruación:", value=None, format="DD/MM/YYYY", key="cq4_fem")
     resp["q4"] = str(q_fem) if q_fem else "No indicada"
-    resp["q7"] = st.radio("7. ¿Está gestando o dando de lactar?", ["No", "Sí"], horizontal=True)
+    resp["q7"] = st.radio("7. ¿Está gestando o dando de lactar?", ["No", "Sí"], horizontal=True, key="cq7")
 else:
     resp["q4"] = "N/A"
     resp["q7"] = "N/A"
 
-resp["q5"] = st.radio("5. ¿Se encuentra actualmente bien de salud?", ["Sí", "No"], horizontal=True)
-resp["q6"] = st.radio("6. ¿Ha tenido fiebre, dolor de cabeza o enfermedad en las últimas dos semanas?", ["No", "Sí"], horizontal=True)
+resp["q5"] = st.radio("5. ¿Se encuentra actualmente bien de salud?", ["Sí", "No"], horizontal=True, key="cq5")
+resp["q6"] = st.radio("6. ¿Ha tenido fiebre, dolor de cabeza o enfermedad en las últimas dos semanas?", ["No", "Sí"], horizontal=True, key="cq6")
 
-resp["q8"] = st.radio("8. ¿Ha sido operado en los últimos seis meses?", ["No", "Sí"], horizontal=True)
+resp["q8"] = st.radio("8. ¿Ha sido operado en los últimos seis meses?", ["No", "Sí"], horizontal=True, key="cq8")
 if resp["q8"] == "Sí":
     resp["q8_detalle"] = st.text_input("¿De qué fue operado?", key="c_q8d")
 
-resp["q9"] = st.radio("9. ¿Ha recibido sangre, trasplante de órgano o tejidos?", ["No", "Sí"], horizontal=True)
+resp["q9"] = st.radio("9. ¿Ha recibido sangre, trasplante de órgano o tejidos?", ["No", "Sí"], horizontal=True, key="cq9")
 if resp["q9"] == "Sí":
     resp["q9_detalle"] = st.text_input("¿Qué recibió y hace cuánto tiempo?", key="c_q9d")
 
-resp["q10"] = st.radio("10. ¿En los últimos 12 meses se realizó tatuajes o punción de piel?", ["No", "Sí"], horizontal=True)
+resp["q10"] = st.radio("10. ¿En los últimos 12 meses se realizó tatuajes o punción de piel?", ["No", "Sí"], horizontal=True, key="cq10")
 if resp["q10"] == "Sí":
     resp["q10_detalle"] = st.text_input("Especifique (tatuaje, arete, acupuntura, etc.):", key="c_q10d")
 
-resp["q11"] = st.radio("11. ¿Recibió alguna vacuna en el último mes?", ["No", "Sí"], horizontal=True)
+resp["q11"] = st.radio("11. ¿Recibió alguna vacuna en el último mes?", ["No", "Sí"], horizontal=True, key="cq11")
 if resp["q11"] == "Sí":
     resp["q11_detalle"] = st.text_input("¿Cuál vacuna?", key="c_q11d")
 
-resp["q12"] = st.radio("12. ¿Tuvo contacto con persona portadora de alguna enfermedad contagiosa?", ["No", "Sí"], horizontal=True)
+resp["q12"] = st.radio("12. ¿Tuvo contacto con persona portadora de alguna enfermedad contagiosa?", ["No", "Sí"], horizontal=True, key="cq12")
 if resp["q12"] == "Sí":
     resp["q12_detalle"] = st.text_input("¿Qué enfermedad tenía la persona?", key="c_q12d")
 
-resp["q13"] = st.radio("13. ¿Ha viajado a zonas con paludismo, fiebre amarilla o leishmaniasis?", ["No", "Sí"], horizontal=True)
+resp["q13"] = st.radio("13. ¿Ha viajado a zonas con paludismo, fiebre amarilla o leishmaniasis?", ["No", "Sí"], horizontal=True, key="cq13")
 if resp["q13"] == "Sí":
     resp["q13_detalle"] = st.text_input("¿A qué zona específica viajó?", key="c_q13d")
 
-resp["q14"] = st.radio("14. ¿Padece alguna molestia que requiere control médico continuo?", ["No", "Sí"], horizontal=True)
+resp["q14"] = st.radio("14. ¿Padece alguna molestia que requiere control médico continuo?", ["No", "Sí"], horizontal=True, key="cq14")
 if resp["q14"] == "Sí":
     resp["q14_detalle"] = st.text_input("¿Cuál molestia?", key="c_q14d")
 
-resp["q15"] = st.radio("15. ¿Consume usted algún tipo de droga?", ["No", "Sí"], horizontal=True)
+resp["q15"] = st.radio("15. ¿Consume usted algún tipo de droga?", ["No", "Sí"], horizontal=True, key="cq15")
 
-resp["q16"] = st.radio("16. ¿Ha tenido alguna enfermedad de transmisión sexual?", ["No", "Sí"], horizontal=True)
+resp["q16"] = st.radio("16. ¿Ha tenido alguna enfermedad de transmisión sexual?", ["No", "Sí"], horizontal=True, key="cq16")
 if resp["q16"] == "Sí":
     resp["q16_detalle"] = st.text_input("¿Cuál enfermedad?", key="c_q16d")
 
-resp["q17"] = st.radio("17. ¿Ha tenido múltiples parejas sexuales en los últimos 12 meses?", ["No", "Sí"], horizontal=True)
-resp["q18"] = st.radio("18. ¿Se ha realizado prueba de VIH/SIDA u otras enfermedades de transmisión sexual?", ["No", "Sí"], horizontal=True)
-resp["q19"] = st.radio("19. ¿Ha estado en prisión en el último año?", ["No", "Sí"], horizontal=True)
-resp["q20"] = st.radio("20. ¿Ha consumido bebidas alcohólicas en las últimas 24 horas?", ["No", "Sí"], horizontal=True)
+resp["q17"] = st.radio("17. ¿Ha tenido múltiples parejas sexuales en los últimos 12 meses?", ["No", "Sí"], horizontal=True, key="cq17")
+resp["q18"] = st.radio("18. ¿Se ha realizado prueba de VIH/SIDA u otras enfermedades de transmisión sexual?", ["No", "Sí"], horizontal=True, key="cq18")
+resp["q19"] = st.radio("19. ¿Ha estado en prisión en el último año?", ["No", "Sí"], horizontal=True, key="cq19")
+resp["q20"] = st.radio("20. ¿Ha consumido bebidas alcohólicas en las últimas 24 horas?", ["No", "Sí"], horizontal=True, key="cq20")
 
 # ═══════════════════════════════════════════════════════════
 # CONVERSIÓN A MAYÚSCULAS — se hace AQUÍ, después de renderizar
@@ -211,9 +212,31 @@ if st.button("✅ Enviar Formulario", type="primary", use_container_width=True):
                    "Si es un error, consulte al personal del banco de sangre.")
         st.stop()
 
-    for k in list(resp.keys()):
-        if k.endswith("_detalle") and isinstance(resp[k], str):
-            resp[k] = resp[k].strip().upper()
+    # ── Leer valores finales desde session_state para evitar bug
+    # de widgets condicionales que capturan el estado anterior ──
+    ss = st.session_state
+    resp_final = {}
+    for q in ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10',
+               'q11','q12','q13','q14','q15','q16','q17','q18','q19','q20']:
+        key = f"c{q}"
+        if key in ss:
+            resp_final[q] = ss[key]
+        elif q in resp:
+            resp_final[q] = resp[q]
+    # Detalles solo si la pregunta padre sigue siendo "Sí"
+    detalles_cloud = {
+        'q1':'q1_detalle','q3':'q3_detalle','q8':'q8_detalle',
+        'q9':'q9_detalle','q10':'q10_detalle','q11':'q11_detalle',
+        'q12':'q12_detalle','q13':'q13_detalle','q14':'q14_detalle',
+        'q16':'q16_detalle',
+    }
+    for padre, det in detalles_cloud.items():
+        if resp_final.get(padre) == "Sí" and det in resp:
+            resp_final[det] = resp[det].strip().upper() if isinstance(resp[det], str) else resp[det]
+    # q4 y q7 (femenino) desde resp original
+    if 'q4' in resp: resp_final['q4'] = resp['q4']
+    if 'q7' in resp: resp_final['q7'] = resp['q7']
+    resp = resp_final
 
     registro = {
         "nombres":                 nombres.strip().upper(),
