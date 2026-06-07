@@ -507,18 +507,30 @@ async function enviar(){
     campania_id:campId,
   };
 
+  async function intentarEnvio(datos){
+    const r=await fetch(`${SB_URL}/rest/v1/donantes_cloud`,{method:"POST",headers:HDR,body:JSON.stringify(datos)});
+    return r;
+  }
+
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/donantes_cloud`,{method:"POST",headers:HDR,body:JSON.stringify(reg)});
-    if(r.ok||r.status===201){
-      marcarEnviado();
-      document.getElementById("formMain").style.display="none";
-      const g=document.getElementById("gracias"); g.style.display="block";
-      if(campId) document.getElementById("graciasMsg").innerHTML="¡Queda inscrito en la campaña de donación!<br>El tecnólogo médico lo atenderá en breve.<br><br>🩸 <b>¡Gracias por donar voluntariamente!</b>";
-    }else{
-      const e=await r.text();
-      showMsg("error","Error al guardar. Intente de nuevo.\n"+e);
-      btn.disabled=false; spin.style.display="none";
+    let r = await intentarEnvio(reg);
+    // Si falla por campania_id (columna no existe en Supabase aún), reintenta sin ella
+    if(!r.ok && r.status!==201){
+      const txt = await r.text();
+      if(txt.includes("campania_id")){
+        const reg2={...reg}; delete reg2.campania_id;
+        r = await intentarEnvio(reg2);
+      }
+      if(!r.ok && r.status!==201){
+        const e2=await r.text();
+        showMsg("error","Error al guardar. Intente de nuevo.\n"+e2);
+        btn.disabled=false; spin.style.display="none"; return;
+      }
     }
+    marcarEnviado();
+    document.getElementById("formMain").style.display="none";
+    const g=document.getElementById("gracias"); g.style.display="block";
+    if(campId) document.getElementById("graciasMsg").innerHTML="¡Queda inscrito en la campaña de donación!<br>El tecnólogo médico lo atenderá en breve.<br><br>🩸 <b>¡Gracias por donar voluntariamente!</b>";
   }catch(e){
     showMsg("error","Error de conexión. Verifique su internet e intente de nuevo.");
     btn.disabled=false; spin.style.display="none";
