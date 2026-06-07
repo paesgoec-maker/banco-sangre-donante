@@ -495,7 +495,22 @@ function showMsg(type, text) {
   el.scrollIntoView({behavior:"smooth", block:"center"});
 }
 
-// ── Verificar duplicado ─────────────────────────────────────
+// ── Anti-spam: bloqueo por navegador (localStorage) ─────────
+function yaEnvioEsteCelular() {
+  try {
+    const hoy = new Date().toISOString().split("T")[0];
+    const clave = `bs_enviado_${hoy}`;
+    return localStorage.getItem(clave) === "1";
+  } catch { return false; }
+}
+function marcarEnviado() {
+  try {
+    const hoy = new Date().toISOString().split("T")[0];
+    localStorage.setItem(`bs_enviado_${hoy}`, "1");
+  } catch {}
+}
+
+// ── Verificar duplicado por DNI en Supabase ──────────────────
 async function yaEnvioHoy(dni) {
   const hoy = new Date().toISOString().split("T")[0];
   const url = `${SB_URL}/rest/v1/donantes_cloud?dni=eq.${dni}&fecha_registro=gte.${hoy}T00:00:00&select=id`;
@@ -505,6 +520,20 @@ async function yaEnvioHoy(dni) {
     return Array.isArray(data) && data.length > 0;
   } catch { return false; }
 }
+
+// ── Al cargar: verificar si este celular ya envió hoy ────────
+window.addEventListener("DOMContentLoaded", () => {
+  if (yaEnvioEsteCelular()) {
+    document.getElementById("formWrap").style.display = "none";
+    const g = document.getElementById("gracias");
+    g.style.display = "block";
+    g.querySelector(".ico").textContent = "✅";
+    g.querySelector("h2").textContent = "Ya registrado";
+    g.querySelector("h2").style.color = "#1565c0";
+    document.getElementById("graciasMsg").innerHTML =
+      "Este celular ya tiene un registro para hoy.<br>Si cree que es un error, consulte al tecnólogo médico.";
+  }
+});
 
 // ── Enviar formulario ────────────────────────────────────────
 async function enviar() {
@@ -621,6 +650,7 @@ async function enviar() {
       body: JSON.stringify(registro)
     });
     if (r.ok || r.status === 201) {
+      marcarEnviado();  // bloquear reenvíos desde este celular
       document.getElementById("formWrap").style.display = "none";
       const gracias = document.getElementById("gracias");
       gracias.style.display = "block";
