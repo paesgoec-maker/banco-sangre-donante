@@ -5,51 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Formulario Donante — Banco de Sangre Hospital Amazónico</title>
 <style>
-  :root{--rojo:#b71c1c;--rojo-claro:#ffebee;--verde:#2e7d32;--naranja:#e65100;--gris:#f5f5f5;--borde:#ddd}
+  :root{--rojo:#b71c1c;--rojo-claro:#ffebee;--verde:#2e7d32;--naranja:#e65100;--borde:#ddd}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f0f0;color:#222;font-size:15px}
   .header{background:linear-gradient(135deg,#b71c1c,#7f0000);padding:20px;text-align:center;color:white}
-  .header h2{font-size:1.2rem;font-weight:800;letter-spacing:.02em}
+  .header h2{font-size:1.2rem;font-weight:800}
   .header p{font-size:.85rem;opacity:.85;margin-top:4px}
-  .camp-banner{background:linear-gradient(135deg,#e65100,#bf360c);color:white;padding:12px 16px;text-align:center;font-weight:700;font-size:.92rem;display:none}
-  .form-wrap{max-width:600px;margin:0 auto;padding:0 0 40px}
-  .seccion{background:var(--rojo);color:white;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;margin:18px 0 10px;border-radius:6px}
-  .campo{margin-bottom:12px;padding:0 14px}
+  .camp-banner{background:linear-gradient(135deg,#e65100,#bf360c);color:white;padding:12px 16px;text-align:center;font-weight:700;font-size:.9rem;display:none}
+  .wrap{max-width:600px;margin:0 auto;padding:0 0 40px}
+  .sec{background:var(--rojo);color:white;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;margin:18px 0 10px;border-radius:6px}
+  .c{margin-bottom:12px;padding:0 14px}
   label{display:block;font-weight:600;font-size:.86rem;margin-bottom:4px;color:#333}
-  label .req{color:var(--rojo);margin-left:2px}
-  input[type=text],input[type=number],input[type=date],select,textarea{
+  .req{color:var(--rojo);margin-left:2px}
+  input[type=text],input[type=number],input[type=date],select{
     width:100%;padding:10px 12px;border:1.5px solid var(--borde);border-radius:8px;
-    font-size:.95rem;background:white;-webkit-appearance:none;appearance:none;
-    transition:border-color .2s}
+    font-size:.95rem;background:white;-webkit-appearance:none}
   input:focus,select:focus{outline:none;border-color:var(--rojo)}
-  .radio-group{display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
-  .radio-group label{font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;
-    background:white;border:1.5px solid var(--borde);border-radius:20px;padding:6px 14px;
-    transition:all .2s;user-select:none}
-  .radio-group input[type=radio]{display:none}
-  .radio-group input[type=radio]:checked+span{font-weight:700}
-  .radio-group label:has(input:checked){background:var(--rojo);color:white;border-color:var(--rojo)}
-  .pregunta{background:white;border:1px solid var(--borde);border-radius:10px;padding:12px 14px;margin-bottom:8px}
-  .pregunta p{font-size:.88rem;font-weight:600;margin-bottom:8px;line-height:1.4}
-  .detalle{margin-top:8px;display:none}
-  .detalle.visible{display:block}
-  .btn-enviar{display:block;width:calc(100% - 28px);margin:20px 14px 0;padding:16px;
+  .rg{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .rg label{font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer;
+    background:white;border:1.5px solid var(--borde);border-radius:20px;padding:7px 16px;transition:all .2s}
+  .rg input[type=radio]{display:none}
+  .rg label:has(input:checked){background:var(--rojo);color:white;border-color:var(--rojo);font-weight:700}
+  .preg{background:white;border:1px solid var(--borde);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+  .preg p{font-size:.88rem;font-weight:600;margin-bottom:8px;line-height:1.4}
+  .det{margin-top:8px;display:none}
+  .det.on{display:block}
+  .btn{display:block;width:calc(100% - 28px);margin:20px 14px 0;padding:16px;
     background:var(--rojo);color:white;border:none;border-radius:12px;font-size:1.05rem;
-    font-weight:800;cursor:pointer;letter-spacing:.03em;transition:transform .15s,box-shadow .15s}
-  .btn-enviar:active{transform:scale(.97)}
-  .btn-enviar:disabled{background:#aaa;cursor:not-allowed}
-  .msg{margin:16px 14px;padding:14px;border-radius:10px;font-weight:600;font-size:.9rem;display:none}
-  .msg.error{background:#ffebee;color:#b71c1c;border:1px solid #ffcdd2}
-  .msg.ok{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
-  .msg.warn{background:#fff8e1;color:#e65100;border:1px solid #ffe082}
+    font-weight:800;cursor:pointer;transition:opacity .2s}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .msg{margin:12px 14px;padding:12px;border-radius:10px;font-size:.88rem;display:none}
+  .err{background:#ffebee;color:#b71c1c;border:1px solid #ffcdd2}
+  .warn{background:#fff8e1;color:#e65100;border:1px solid #ffe082}
+  .ok{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7}
   .gracias{display:none;text-align:center;padding:40px 20px;background:white}
   .gracias .ico{font-size:3rem;margin-bottom:12px}
   .gracias h2{color:var(--verde);font-size:1.3rem;margin-bottom:8px}
   .gracias p{color:#555;font-size:.9rem;line-height:1.5}
-  .spinner{display:none;text-align:center;padding:10px;color:#888;font-size:.85rem}
   .fila2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  @media(max-width:480px){.fila2{grid-template-columns:1fr}}
-  .nota{font-size:.75rem;color:#888;margin-top:3px}
+  @media(max-width:420px){.fila2{grid-template-columns:1fr}}
+  .spin{text-align:center;padding:8px;color:#888;font-size:.85rem;display:none}
 </style>
 </head>
 <body>
@@ -58,360 +53,307 @@
   <h2>🩸 Banco de Sangre — Hospital Amazónico</h2>
   <p>Formulario previo de donación · Yarinacocha, Ucayali</p>
 </div>
-
 <div class="camp-banner" id="campBanner">📣 CAMPAÑA DE DONACIÓN</div>
 
-<div id="formWrap" class="form-wrap">
-
-  <div class="msg error" id="msgError"></div>
-  <div class="msg warn"  id="msgWarn"></div>
+<div id="formMain" class="wrap">
+  <div class="msg err"  id="msgErr"></div>
+  <div class="msg warn" id="msgWarn"></div>
 
   <!-- DATOS PERSONALES -->
-  <div class="seccion">Datos Personales</div>
-
-  <div class="campo">
-    <label>Nombres completos <span class="req">*</span></label>
-    <input type="text" id="nombres" placeholder="Ej: JUAN CARLOS" oninput="this.value=this.value.toUpperCase()">
+  <div class="sec">Datos Personales</div>
+  <div class="c"><label>Nombres completos <span class="req">*</span></label>
+    <input type="text" id="nombres" oninput="mayus(this)" placeholder="Ej: JUAN CARLOS"></div>
+  <div class="c"><label>Apellidos <span class="req">*</span></label>
+    <input type="text" id="apellidos" oninput="mayus(this)" placeholder="Ej: PÉREZ GARCÍA"></div>
+  <div class="fila2 c" style="padding:0 14px">
+    <div><label>DNI (8 dígitos) <span class="req">*</span></label>
+      <input type="text" id="dni" maxlength="8" inputmode="numeric" placeholder="12345678"></div>
+    <div><label>Edad <span class="req">*</span></label>
+      <input type="number" id="edad" min="18" max="65" placeholder="18-65"></div>
   </div>
-  <div class="campo">
-    <label>Apellidos <span class="req">*</span></label>
-    <input type="text" id="apellidos" placeholder="Ej: PÉREZ GARCÍA" oninput="this.value=this.value.toUpperCase()">
-  </div>
-  <div class="fila2 campo" style="padding:0 14px">
-    <div>
-      <label>DNI (8 dígitos) <span class="req">*</span></label>
-      <input type="text" id="dni" maxlength="8" inputmode="numeric" pattern="[0-9]{8}" placeholder="12345678">
-    </div>
-    <div>
-      <label>Edad <span class="req">*</span></label>
-      <input type="number" id="edad" min="18" max="65" placeholder="18-65">
-    </div>
-  </div>
-  <div class="fila2 campo" style="padding:0 14px">
-    <div>
-      <label>Sexo <span class="req">*</span></label>
-      <select id="sexo" onchange="toggleFemenino()">
+  <div class="fila2 c" style="padding:0 14px">
+    <div><label>Sexo <span class="req">*</span></label>
+      <select id="sexo" onchange="toggleFem()">
         <option value="">— Seleccione —</option>
-        <option>Masculino</option>
-        <option>Femenino</option>
-      </select>
-    </div>
-    <div>
-      <label>Estado civil</label>
-      <select id="estado_civil">
+        <option>Masculino</option><option>Femenino</option></select></div>
+    <div><label>Estado civil</label>
+      <select id="est_civil">
         <option value="">— Seleccione —</option>
         <option>Soltero(a)</option><option>Casado(a)</option>
-        <option>Conviviente</option><option>Divorciado(a)</option><option>Viudo(a)</option>
-      </select>
-    </div>
+        <option>Conviviente</option><option>Divorciado(a)</option><option>Viudo(a)</option></select></div>
   </div>
-  <div class="campo">
-    <label>Lugar de nacimiento</label>
-    <select id="lugar_nacimiento">
+  <div class="c"><label>Lugar de nacimiento</label>
+    <select id="lugar_nac">
       <option value="">— Departamento —</option>
-      <option>Amazonas</option><option>Áncash</option><option>Apurímac</option>
-      <option>Arequipa</option><option>Ayacucho</option><option>Cajamarca</option>
-      <option>Callao</option><option>Cusco</option><option>Huancavelica</option>
-      <option>Huánuco</option><option>Ica</option><option>Junín</option>
-      <option>La Libertad</option><option>Lambayeque</option><option>Lima</option>
-      <option>Loreto</option><option>Madre de Dios</option><option>Moquegua</option>
-      <option>Pasco</option><option>Piura</option><option>Puno</option>
-      <option>San Martín</option><option>Tacna</option><option>Tumbes</option>
-      <option>Ucayali</option>
-    </select>
-  </div>
-  <div class="campo">
-    <label>Fecha de nacimiento</label>
-    <input type="date" id="fecha_nacimiento" min="1950-01-01" max="2007-12-31">
-  </div>
-  <div class="campo">
-    <label>Grado de instrucción</label>
-    <select id="grado_instruccion">
+      <option>Amazonas</option><option>Áncash</option><option>Apurímac</option><option>Arequipa</option>
+      <option>Ayacucho</option><option>Cajamarca</option><option>Callao</option><option>Cusco</option>
+      <option>Huancavelica</option><option>Huánuco</option><option>Ica</option><option>Junín</option>
+      <option>La Libertad</option><option>Lambayeque</option><option>Lima</option><option>Loreto</option>
+      <option>Madre de Dios</option><option>Moquegua</option><option>Pasco</option><option>Piura</option>
+      <option>Puno</option><option>San Martín</option><option>Tacna</option><option>Tumbes</option>
+      <option>Ucayali</option></select></div>
+  <div class="c"><label>Fecha de nacimiento</label>
+    <input type="date" id="fec_nac" min="1950-01-01" max="2007-12-31"></div>
+  <div class="c"><label>Grado de instrucción</label>
+    <select id="grado">
       <option value="">— Seleccione —</option>
       <option>Primaria</option><option>Secundaria</option><option>Superior</option>
-      <option>Master</option><option>Doctorado</option>
-    </select>
-  </div>
-  <div class="campo">
-    <label>Domicilio actual</label>
-    <input type="text" id="domicilio" placeholder="Calle / Av. / Jr." oninput="this.value=this.value.toUpperCase()">
-  </div>
-  <div class="campo">
-    <label>Celular (9 dígitos)</label>
-    <input type="text" id="celular" maxlength="9" inputmode="numeric" placeholder="987654321">
-  </div>
-  <div class="campo">
-    <label>Ocupación</label>
-    <select id="ocupacion_op" onchange="toggleOtros('ocupacion_op','ocupacion_otros')">
+      <option>Master</option><option>Doctorado</option></select></div>
+  <div class="c"><label>Domicilio actual</label>
+    <input type="text" id="domicilio" oninput="mayus(this)" placeholder="Calle / Av. / Jr."></div>
+  <div class="c"><label>Celular (9 dígitos)</label>
+    <input type="text" id="celular" maxlength="9" inputmode="numeric" placeholder="987654321"></div>
+  <div class="c"><label>Ocupación</label>
+    <select id="ocup_op" onchange="togOtro('ocup_op','ocup_otro')">
       <option value="">— Seleccione —</option>
       <option>Estudiante</option><option>Empleado</option><option>Independiente</option>
-      <option>Ama de casa</option><option>Otros</option>
-    </select>
-    <div class="detalle" id="ocupacion_otros">
-      <input type="text" id="ocupacion_otro_val" placeholder="Especifique su ocupación" oninput="this.value=this.value.toUpperCase()" style="margin-top:6px">
-    </div>
-  </div>
-  <div class="campo">
-    <label>Centro de trabajo</label>
-    <select id="centro_op" onchange="toggleOtros('centro_op','centro_otros')">
+      <option>Ama de casa</option><option>Otros</option></select>
+    <div class="det" id="ocup_otro">
+      <input type="text" id="ocup_val" oninput="mayus(this)" placeholder="Especifique" style="margin-top:6px"></div></div>
+  <div class="c"><label>Centro de trabajo</label>
+    <select id="ctrab_op" onchange="togOtro('ctrab_op','ctrab_otro')">
       <option value="">— Seleccione —</option>
       <option>Independiente</option><option>Sector Público</option>
-      <option>Sector Privado</option><option>Otros</option>
-    </select>
-    <div class="detalle" id="centro_otros">
-      <input type="text" id="centro_otro_val" placeholder="Especifique su centro de trabajo" oninput="this.value=this.value.toUpperCase()" style="margin-top:6px">
-    </div>
-  </div>
+      <option>Sector Privado</option><option>Otros</option></select>
+    <div class="det" id="ctrab_otro">
+      <input type="text" id="ctrab_val" oninput="mayus(this)" placeholder="Especifique" style="margin-top:6px"></div></div>
 
   <!-- TIPO DE DONACIÓN -->
-  <div class="seccion">Tipo de Donación</div>
-  <div class="campo">
+  <div class="sec">Tipo de Donación</div>
+  <div class="c">
     <label>Usted dona como: <span class="req">*</span></label>
-    <div class="radio-group">
-      <label><input type="radio" name="tipo_donacion" value="Voluntario" checked onchange="toggleReposicion()"><span>Voluntario</span></label>
-      <label><input type="radio" name="tipo_donacion" value="Reposición" onchange="toggleReposicion()"><span>Reposición</span></label>
-      <label><input type="radio" name="tipo_donacion" value="Autólogo"   onchange="toggleReposicion()"><span>Autólogo</span></label>
+    <div class="rg">
+      <label><input type="radio" name="tipo" value="Voluntario" checked onchange="togRep()"><span>Voluntario</span></label>
+      <label><input type="radio" name="tipo" value="Reposición" onchange="togRep()"><span>Reposición</span></label>
+      <label><input type="radio" name="tipo" value="Autólogo"   onchange="togRep()"><span>Autólogo</span></label>
     </div>
   </div>
-  <div class="detalle" id="secReposicion" style="padding:0 14px;margin-bottom:8px">
-    <div style="background:#fff8e1;border-left:3px solid #f57c00;padding:10px 12px;border-radius:8px;margin-bottom:8px;font-size:.85rem;color:#555">
-      Ingrese los datos del paciente receptor:
-    </div>
-    <div class="campo" style="padding:0">
-      <label>Nombres del paciente</label>
-      <input type="text" id="rec_nom" oninput="this.value=this.value.toUpperCase()">
-    </div>
-    <div class="campo" style="padding:0;margin-top:6px">
-      <label>Apellidos del paciente</label>
-      <input type="text" id="rec_ape" oninput="this.value=this.value.toUpperCase()">
-    </div>
-    <div class="campo" style="padding:0;margin-top:6px">
-      <label>DNI del paciente</label>
-      <input type="text" id="rec_dni" maxlength="8" inputmode="numeric">
-    </div>
+  <div class="det c" id="secRep" style="padding:0 14px">
+    <div style="background:#fff8e1;border-left:3px solid #f57c00;padding:10px;border-radius:8px;margin-bottom:8px;font-size:.84rem">Datos del paciente receptor:</div>
+    <div class="c" style="padding:0"><label>Nombres del paciente</label>
+      <input type="text" id="rec_nom" oninput="mayus(this)"></div>
+    <div class="c" style="padding:0;margin-top:6px"><label>Apellidos del paciente</label>
+      <input type="text" id="rec_ape" oninput="mayus(this)"></div>
+    <div class="c" style="padding:0;margin-top:6px"><label>DNI del paciente</label>
+      <input type="text" id="rec_dni" maxlength="8" inputmode="numeric"></div>
   </div>
 
   <!-- CUESTIONARIO -->
-  <div class="seccion">Cuestionario de Selección</div>
-  <div class="campo" style="padding:0 14px">
-    <div style="background:#e3f2fd;border-left:3px solid #1565c0;padding:10px 12px;border-radius:8px;font-size:.83rem;color:#1565c0">
+  <div class="sec">Cuestionario de Selección</div>
+  <div class="c" style="padding:0 14px">
+    <div style="background:#e3f2fd;border-left:3px solid #1565c0;padding:10px;border-radius:8px;font-size:.82rem;color:#1565c0">
       Responda con sinceridad. Sus respuestas son confidenciales y protegen su salud.
     </div>
   </div>
 
-  <!-- Preguntas femeninas (ocultas por defecto) -->
+  <!-- Preguntas femeninas -->
   <div id="secFem" style="display:none">
-    <div class="campo">
-      <div class="pregunta">
-        <p>4. Fecha de última menstruación:</p>
-        <input type="date" id="q4_fecha">
-      </div>
-    </div>
-    <div class="campo">
-      <div class="pregunta">
-        <p>7. ¿Está gestando o dando de lactar?</p>
-        <div class="radio-group">
-          <label><input type="radio" name="q7" value="No" checked><span>No</span></label>
-          <label><input type="radio" name="q7" value="Sí"><span>Sí</span></label>
-        </div>
-      </div>
-    </div>
+    <div class="c"><div class="preg">
+      <p>4. Fecha de última menstruación:</p>
+      <input type="date" id="q4_fecha"></div></div>
+    <div class="c"><div class="preg">
+      <p>7. ¿Está gestando o dando de lactar?</p>
+      <div class="rg">
+        <label><input type="radio" name="q7" value="No" checked><span>No</span></label>
+        <label><input type="radio" name="q7" value="Sí"><span>Sí</span></label>
+      </div></div></div>
   </div>
 
   <!-- Q1 -->
-  <div class="campo"><div class="pregunta">
-    <p>1. ¿Ha donado sangre anteriormente?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q1" value="No" checked onchange="toggleDet('q1','det_q1')"><span>No</span></label>
-      <label><input type="radio" name="q1" value="Sí" onchange="toggleDet('q1','det_q1')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>1. ¿Ha donado sangre anteriormente?</p>
+    <div class="rg">
+      <label><input type="radio" name="q1" value="No" checked onchange="tog('q1','d1')"><span>No</span></label>
+      <label><input type="radio" name="q1" value="Sí" onchange="tog('q1','d1')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q1">
-      <input type="text" id="q1_det" placeholder="¿Hace cuánto tiempo fue su última donación?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d1"><input type="text" id="q1d" oninput="mayus(this)" placeholder="¿Hace cuánto fue su última donación?"></div>
   </div></div>
 
   <!-- Q2 -->
-  <div class="campo"><div class="pregunta">
-    <p>2. ¿Donó sangre en los últimos tres meses?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>2. ¿Donó sangre en los últimos tres meses?</p>
+    <div class="rg">
       <label><input type="radio" name="q2" value="No" checked><span>No</span></label>
       <label><input type="radio" name="q2" value="Sí"><span>Sí</span></label>
-    </div>
-  </div></div>
+    </div></div></div>
 
   <!-- Q3 -->
-  <div class="campo"><div class="pregunta">
-    <p>3. ¿Está tomando o tomó algún medicamento en los últimos días?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q3" value="No" checked onchange="toggleDet('q3','det_q3')"><span>No</span></label>
-      <label><input type="radio" name="q3" value="Sí" onchange="toggleDet('q3','det_q3')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>3. ¿Está tomando o tomó algún medicamento en los últimos días?</p>
+    <div class="rg">
+      <label><input type="radio" name="q3" value="No" checked onchange="tog('q3','d3')"><span>No</span></label>
+      <label><input type="radio" name="q3" value="Sí" onchange="tog('q3','d3')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q3">
-      <input type="text" id="q3_det" placeholder="¿Cuáles medicamentos?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d3"><input type="text" id="q3d" oninput="mayus(this)" placeholder="¿Cuáles medicamentos?"></div>
   </div></div>
 
   <!-- Q5 -->
-  <div class="campo"><div class="pregunta">
-    <p>5. ¿Se encuentra actualmente bien de salud?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>5. ¿Se encuentra actualmente bien de salud?</p>
+    <div class="rg">
       <label><input type="radio" name="q5" value="Sí" checked><span>Sí</span></label>
       <label><input type="radio" name="q5" value="No"><span>No</span></label>
-    </div>
-  </div></div>
+    </div></div></div>
 
   <!-- Q6 -->
-  <div class="campo"><div class="pregunta">
-    <p>6. ¿Ha tenido fiebre, dolor de cabeza o enfermedad en las últimas dos semanas?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>6. ¿Ha tenido fiebre, dolor de cabeza o enfermedad en las últimas dos semanas?</p>
+    <div class="rg">
       <label><input type="radio" name="q6" value="No" checked><span>No</span></label>
       <label><input type="radio" name="q6" value="Sí"><span>Sí</span></label>
-    </div>
-  </div></div>
+    </div></div></div>
 
   <!-- Q8 -->
-  <div class="campo"><div class="pregunta">
-    <p>8. ¿Ha sido operado en los últimos seis meses?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q8" value="No" checked onchange="toggleDet('q8','det_q8')"><span>No</span></label>
-      <label><input type="radio" name="q8" value="Sí" onchange="toggleDet('q8','det_q8')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>8. ¿Ha sido operado en los últimos seis meses?</p>
+    <div class="rg">
+      <label><input type="radio" name="q8" value="No" checked onchange="tog('q8','d8')"><span>No</span></label>
+      <label><input type="radio" name="q8" value="Sí" onchange="tog('q8','d8')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q8">
-      <input type="text" id="q8_det" placeholder="¿De qué fue operado?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d8"><input type="text" id="q8d" oninput="mayus(this)" placeholder="¿De qué fue operado?"></div>
   </div></div>
 
   <!-- Q9 -->
-  <div class="campo"><div class="pregunta">
-    <p>9. ¿Ha recibido sangre, trasplante de órgano o tejidos?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q9" value="No" checked onchange="toggleDet('q9','det_q9')"><span>No</span></label>
-      <label><input type="radio" name="q9" value="Sí" onchange="toggleDet('q9','det_q9')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>9. ¿Ha recibido sangre, trasplante de órgano o tejidos?</p>
+    <div class="rg">
+      <label><input type="radio" name="q9" value="No" checked onchange="tog('q9','d9')"><span>No</span></label>
+      <label><input type="radio" name="q9" value="Sí" onchange="tog('q9','d9')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q9">
-      <input type="text" id="q9_det" placeholder="¿Qué recibió y hace cuánto tiempo?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d9"><input type="text" id="q9d" oninput="mayus(this)" placeholder="¿Qué recibió y hace cuánto?"></div>
   </div></div>
 
   <!-- Q10 -->
-  <div class="campo"><div class="pregunta">
-    <p>10. ¿En los últimos 12 meses se realizó tatuajes o punción de piel?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q10" value="No" checked onchange="toggleDet('q10','det_q10')"><span>No</span></label>
-      <label><input type="radio" name="q10" value="Sí" onchange="toggleDet('q10','det_q10')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>10. ¿En los últimos 12 meses se realizó tatuajes o punción de piel (acupuntura, aretes)?</p>
+    <div class="rg">
+      <label><input type="radio" name="q10" value="No" checked onchange="tog('q10','d10')"><span>No</span></label>
+      <label><input type="radio" name="q10" value="Sí" onchange="tog('q10','d10')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q10">
-      <input type="text" id="q10_det" placeholder="Especifique (tatuaje, arete, acupuntura, etc.)" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d10"><input type="text" id="q10d" oninput="mayus(this)" placeholder="Especifique (tatuaje, arete, acupuntura...)"></div>
   </div></div>
 
   <!-- Q11 -->
-  <div class="campo"><div class="pregunta">
-    <p>11. ¿Recibió alguna vacuna en el último mes?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q11" value="No" checked onchange="toggleDet('q11','det_q11')"><span>No</span></label>
-      <label><input type="radio" name="q11" value="Sí" onchange="toggleDet('q11','det_q11')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>11. ¿Recibió alguna vacuna en el último mes?</p>
+    <div class="rg">
+      <label><input type="radio" name="q11" value="No" checked onchange="tog('q11','d11')"><span>No</span></label>
+      <label><input type="radio" name="q11" value="Sí" onchange="tog('q11','d11')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q11">
-      <input type="text" id="q11_det" placeholder="¿Cuál vacuna?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d11"><input type="text" id="q11d" oninput="mayus(this)" placeholder="¿Cuál vacuna?"></div>
   </div></div>
 
   <!-- Q12 -->
-  <div class="campo"><div class="pregunta">
-    <p>12. ¿Tuvo contacto con persona portadora de alguna enfermedad contagiosa?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q12" value="No" checked onchange="toggleDet('q12','det_q12')"><span>No</span></label>
-      <label><input type="radio" name="q12" value="Sí" onchange="toggleDet('q12','det_q12')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>12. ¿Tuvo contacto con persona portadora de alguna enfermedad contagiosa?</p>
+    <div class="rg">
+      <label><input type="radio" name="q12" value="No" checked onchange="tog('q12','d12')"><span>No</span></label>
+      <label><input type="radio" name="q12" value="Sí" onchange="tog('q12','d12')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q12">
-      <input type="text" id="q12_det" placeholder="¿Qué enfermedad tenía la persona?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d12"><input type="text" id="q12d" oninput="mayus(this)" placeholder="¿Qué enfermedad tenía la persona?"></div>
   </div></div>
 
   <!-- Q13 -->
-  <div class="campo"><div class="pregunta">
-    <p>13. ¿Ha viajado a zonas con paludismo, fiebre amarilla o leishmaniasis?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q13" value="No" checked onchange="toggleDet('q13','det_q13')"><span>No</span></label>
-      <label><input type="radio" name="q13" value="Sí" onchange="toggleDet('q13','det_q13')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>13. ¿Ha viajado recientemente a comunidades nativas, selva profunda o zonas con brotes de paludismo, fiebre amarilla o leishmaniasis?</p>
+    <div class="rg">
+      <label><input type="radio" name="q13" value="No" checked onchange="tog('q13','d13')"><span>No</span></label>
+      <label><input type="radio" name="q13" value="Sí" onchange="tog('q13','d13')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q13">
-      <input type="text" id="q13_det" placeholder="¿A qué zona específica viajó?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d13"><input type="text" id="q13d" oninput="mayus(this)" placeholder="¿A qué zona específica viajó?"></div>
   </div></div>
 
   <!-- Q14 -->
-  <div class="campo"><div class="pregunta">
-    <p>14. ¿Padece alguna molestia que requiere control médico continuo?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q14" value="No" checked onchange="toggleDet('q14','det_q14')"><span>No</span></label>
-      <label><input type="radio" name="q14" value="Sí" onchange="toggleDet('q14','det_q14')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>14. ¿Padece de alguna molestia que requiere control médico continuo?</p>
+    <div class="rg">
+      <label><input type="radio" name="q14" value="No" checked onchange="tog('q14','d14')"><span>No</span></label>
+      <label><input type="radio" name="q14" value="Sí" onchange="tog('q14','d14')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q14">
-      <input type="text" id="q14_det" placeholder="¿Cuál molestia?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d14"><input type="text" id="q14d" oninput="mayus(this)" placeholder="¿Cuál molestia?"></div>
   </div></div>
 
   <!-- Q15 -->
-  <div class="campo"><div class="pregunta">
-    <p>15. ¿Consume usted algún tipo de droga?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q15" value="No" checked><span>No</span></label>
-      <label><input type="radio" name="q15" value="Sí"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>15. ¿Consume usted algún tipo de droga?</p>
+    <div class="rg">
+      <label><input type="radio" name="q15" value="No" checked onchange="tog('q15','d15')"><span>No</span></label>
+      <label><input type="radio" name="q15" value="Sí" onchange="tog('q15','d15')"><span>Sí</span></label>
     </div>
+    <div class="det" id="d15"><input type="text" id="q15d" oninput="mayus(this)" placeholder="¿Cuál droga?"></div>
   </div></div>
 
   <!-- Q16 -->
-  <div class="campo"><div class="pregunta">
-    <p>16. ¿Ha tenido alguna enfermedad de transmisión sexual?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q16" value="No" checked onchange="toggleDet('q16','det_q16')"><span>No</span></label>
-      <label><input type="radio" name="q16" value="Sí" onchange="toggleDet('q16','det_q16')"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>16. ¿Ha tenido tratamiento o procedimiento odontológico reciente?</p>
+    <div class="rg">
+      <label><input type="radio" name="q16" value="No" checked onchange="tog('q16','d16')"><span>No</span></label>
+      <label><input type="radio" name="q16" value="Sí" onchange="tog('q16','d16')"><span>Sí</span></label>
     </div>
-    <div class="detalle" id="det_q16">
-      <input type="text" id="q16_det" placeholder="¿Cuál enfermedad?" oninput="this.value=this.value.toUpperCase()">
-    </div>
+    <div class="det" id="d16"><input type="text" id="q16d" oninput="mayus(this)" placeholder="¿Qué tratamiento odontológico recibió?"></div>
   </div></div>
 
   <!-- Q17 -->
-  <div class="campo"><div class="pregunta">
-    <p>17. ¿Ha tenido múltiples parejas sexuales en los últimos 12 meses?</p>
-    <div class="radio-group">
-      <label><input type="radio" name="q17" value="No" checked><span>No</span></label>
-      <label><input type="radio" name="q17" value="Sí"><span>Sí</span></label>
+  <div class="c"><div class="preg"><p>17. ¿Tiene actualmente alguna herida en el cuerpo?</p>
+    <div class="rg">
+      <label><input type="radio" name="q17" value="No" checked onchange="tog('q17','d17')"><span>No</span></label>
+      <label><input type="radio" name="q17" value="Sí" onchange="tog('q17','d17')"><span>Sí</span></label>
     </div>
+    <div class="det" id="d17"><input type="text" id="q17d" oninput="mayus(this)" placeholder="¿En qué parte del cuerpo?"></div>
   </div></div>
 
   <!-- Q18 -->
-  <div class="campo"><div class="pregunta">
-    <p>18. ¿Se ha realizado prueba de VIH/SIDA u otras enfermedades de transmisión sexual?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>18. ¿Ha tenido más de dos parejas sexuales en el último año?</p>
+    <div class="rg">
       <label><input type="radio" name="q18" value="No" checked><span>No</span></label>
       <label><input type="radio" name="q18" value="Sí"><span>Sí</span></label>
-    </div>
-  </div></div>
+    </div></div></div>
 
   <!-- Q19 -->
-  <div class="campo"><div class="pregunta">
-    <p>19. ¿Ha estado en prisión en el último año?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>19. ¿Tiene alguna duda de ser portador de VIH, Hepatitis B o C?</p>
+    <div class="rg">
       <label><input type="radio" name="q19" value="No" checked><span>No</span></label>
       <label><input type="radio" name="q19" value="Sí"><span>Sí</span></label>
-    </div>
-  </div></div>
+    </div></div></div>
 
   <!-- Q20 -->
-  <div class="campo"><div class="pregunta">
-    <p>20. ¿Ha consumido bebidas alcohólicas en las últimas 24 horas?</p>
-    <div class="radio-group">
+  <div class="c"><div class="preg"><p>20. En el último año, ¿ha tenido relaciones sexuales ocasionales sin protección?</p>
+    <div class="rg">
       <label><input type="radio" name="q20" value="No" checked><span>No</span></label>
       <label><input type="radio" name="q20" value="Sí"><span>Sí</span></label>
+    </div></div></div>
+
+  <!-- Q21 -->
+  <div class="c"><div class="preg"><p>21. ¿Ha tenido alguna prueba para VIH que dio positiva?</p>
+    <div class="rg">
+      <label><input type="radio" name="q21" value="No" checked><span>No</span></label>
+      <label><input type="radio" name="q21" value="Sí"><span>Sí</span></label>
+    </div></div></div>
+
+  <!-- Q22 -->
+  <div class="c"><div class="preg"><p>22. ¿Ha padecido de alguna enfermedad de transmisión sexual?</p>
+    <div class="rg">
+      <label><input type="radio" name="q22" value="No" checked onchange="tog('q22','d22')"><span>No</span></label>
+      <label><input type="radio" name="q22" value="Sí" onchange="tog('q22','d22')"><span>Sí</span></label>
     </div>
+    <div class="det" id="d22"><input type="text" id="q22d" oninput="mayus(this)" placeholder="¿Cuál enfermedad de transmisión sexual?"></div>
   </div></div>
 
-  <div class="spinner" id="spinner">⏳ Enviando sus datos...</div>
-  <button class="btn-enviar" id="btnEnviar" onclick="enviar()">✅ Enviar Formulario</button>
+  <!-- Q23 -->
+  <div class="c"><div class="preg"><p>23. ¿Ha sido excluido como donante anteriormente?</p>
+    <div class="rg">
+      <label><input type="radio" name="q23" value="No" checked onchange="tog('q23','d23')"><span>No</span></label>
+      <label><input type="radio" name="q23" value="Sí" onchange="tog('q23','d23')"><span>Sí</span></label>
+    </div>
+    <div class="det" id="d23"><input type="text" id="q23d" oninput="mayus(this)" placeholder="¿Por qué motivo fue excluido?"></div>
+  </div></div>
+
+  <!-- Q24 -->
+  <div class="c"><div class="preg"><p>24. ¿Viajó fuera del país en el último año?</p>
+    <div class="rg">
+      <label><input type="radio" name="q24" value="No" checked onchange="tog('q24','d24')"><span>No</span></label>
+      <label><input type="radio" name="q24" value="Sí" onchange="tog('q24','d24')"><span>Sí</span></label>
+    </div>
+    <div class="det" id="d24"><input type="text" id="q24d" oninput="mayus(this)" placeholder="¿A qué país/países?"></div>
+  </div></div>
+
+  <!-- Q25 -->
+  <div class="c"><div class="preg"><p>25. ¿Padece o ha padecido de alguna enfermedad grave, crónica o infecciosa?</p>
+    <div class="rg">
+      <label><input type="radio" name="q25" value="No" checked onchange="tog('q25','d25')"><span>No</span></label>
+      <label><input type="radio" name="q25" value="Sí" onchange="tog('q25','d25')"><span>Sí</span></label>
+    </div>
+    <div class="det" id="d25"><input type="text" id="q25d" oninput="mayus(this)" placeholder="Especifique qué enfermedad"></div>
+  </div></div>
+
+  <div class="spin" id="spin">⏳ Enviando sus datos...</div>
+  <button class="btn" id="btnEnv" onclick="enviar()">✅ Enviar Formulario</button>
   <p style="text-align:center;font-size:.72rem;color:#999;margin-top:8px;padding:0 14px">
     Sus datos son confidenciales y serán usados exclusivamente para la evaluación de donación de sangre.
   </p>
@@ -423,249 +365,163 @@
   <h2>¡Gracias por registrarse!</h2>
   <p id="graciasMsg">Sus datos fueron recibidos correctamente.<br>El personal del banco de sangre lo atenderá en breve.</p>
   <div style="margin-top:20px;background:#f5f5f5;border-radius:10px;padding:16px;font-size:.85rem;color:#555;text-align:left">
-    <b>Próximos pasos:</b><br>
-    1. Espere a ser llamado por el tecnólogo médico<br>
-    2. Traiga su DNI para verificación<br>
-    3. ¡Gracias por salvar vidas! 💙
+    <b>Próximos pasos:</b><br>1. Espere a ser llamado por el tecnólogo médico<br>
+    2. Traiga su DNI para verificación<br>3. ¡Gracias por salvar vidas! 💙
   </div>
 </div>
 
 <script>
-// ── Configuración Supabase ──────────────────────────────────
 const SB_URL = "https://tfqvfodarwkrxudmtytz.supabase.co";
 const SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRmcXZmb2Rhcndrcnh1ZG10eXR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyMzYzMTcsImV4cCI6MjA5NTgxMjMxN30.KT3fDjNSQtF1SZpB36dVANNau8ATjXt-CzTlSuDNQzE";
-const HEADERS = {
-  "apikey": SB_KEY,
-  "Authorization": "Bearer " + SB_KEY,
-  "Content-Type": "application/json",
-  "Prefer": "return=minimal"
-};
+const HDR = {"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY,"Content-Type":"application/json","Prefer":"return=minimal"};
 
-// ── Leer parámetro de campaña ───────────────────────────────
-const urlParams = new URLSearchParams(window.location.search);
-const campaniaId = urlParams.get("campania") ? parseInt(urlParams.get("campania")) : null;
-
-if (campaniaId) {
-  const banner = document.getElementById("campBanner");
-  banner.style.display = "block";
-  // Obtener nombre de campaña
-  fetch(`${SB_URL}/rest/v1/campanias_donacion?id=eq.${campaniaId}&select=nombre_campania,institucion,fecha_campania`, {
-    headers: {"apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY}
-  }).then(r => r.json()).then(data => {
-    if (data && data[0]) {
-      const c = data[0];
-      banner.innerHTML = `📣 CAMPAÑA: ${c.nombre_campania || ''} | ${c.institucion || ''} | ${c.fecha_campania || ''}`;
-    }
-  }).catch(() => {});
+// Campaña
+const params = new URLSearchParams(window.location.search);
+const campId = params.get("campania") ? parseInt(params.get("campania")) : null;
+if (campId) {
+  const b = document.getElementById("campBanner");
+  b.style.display = "block";
+  fetch(`${SB_URL}/rest/v1/campanias_donacion?id=eq.${campId}&select=nombre_campania,institucion,fecha_campania`,
+    {headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}})
+  .then(r=>r.json()).then(d=>{if(d&&d[0]){b.innerHTML=`📣 CAMPAÑA: ${d[0].nombre_campania||''} | ${d[0].institucion||''} | ${d[0].fecha_campania||''}`}}).catch(()=>{});
 }
 
-// ── Helpers ─────────────────────────────────────────────────
-function toggleDet(radioName, detId) {
-  const val = document.querySelector(`input[name="${radioName}"]:checked`)?.value;
-  const el  = document.getElementById(detId);
-  if (el) el.classList.toggle("visible", val === "Sí");
-}
-function toggleOtros(selId, detId) {
-  const val = document.getElementById(selId).value;
-  const el  = document.getElementById(detId);
-  if (el) el.classList.toggle("visible", val === "Otros");
-}
-function toggleFemenino() {
-  const sexo = document.getElementById("sexo").value;
-  document.getElementById("secFem").style.display = sexo === "Femenino" ? "block" : "none";
-}
-function toggleReposicion() {
-  const tipo = document.querySelector('input[name="tipo_donacion"]:checked')?.value;
-  document.getElementById("secReposicion").classList.toggle("visible", tipo === "Reposición");
-}
-function radio(name) {
-  return document.querySelector(`input[name="${name}"]:checked`)?.value || "No";
-}
-function val(id) {
-  const el = document.getElementById(id);
-  return el ? el.value.trim() : "";
-}
-function showMsg(type, text) {
-  ["msgError","msgWarn"].forEach(id => {
-    const el = document.getElementById(id);
-    el.style.display = "none"; el.textContent = "";
-  });
-  const el = document.getElementById(type === "error" ? "msgError" : "msgWarn");
-  el.textContent = text; el.style.display = "block";
-  el.scrollIntoView({behavior:"smooth", block:"center"});
-}
+// Anti-spam localStorage
+function yaEnvioHoy(){try{return localStorage.getItem("bs_"+new Date().toISOString().split("T")[0])==="1"}catch{return false}}
+function marcarEnviado(){try{localStorage.setItem("bs_"+new Date().toISOString().split("T")[0],"1")}catch{}}
 
-// ── Anti-spam: bloqueo por navegador (localStorage) ─────────
-function yaEnvioEsteCelular() {
-  try {
-    const hoy = new Date().toISOString().split("T")[0];
-    const clave = `bs_enviado_${hoy}`;
-    return localStorage.getItem(clave) === "1";
-  } catch { return false; }
-}
-function marcarEnviado() {
-  try {
-    const hoy = new Date().toISOString().split("T")[0];
-    localStorage.setItem(`bs_enviado_${hoy}`, "1");
-  } catch {}
-}
-
-// ── Verificar duplicado por DNI en Supabase ──────────────────
-async function yaEnvioHoy(dni) {
-  const hoy = new Date().toISOString().split("T")[0];
-  const url = `${SB_URL}/rest/v1/donantes_cloud?dni=eq.${dni}&fecha_registro=gte.${hoy}T00:00:00&select=id`;
-  try {
-    const r = await fetch(url, {headers: {"apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY}});
-    const data = await r.json();
-    return Array.isArray(data) && data.length > 0;
-  } catch { return false; }
-}
-
-// ── Al cargar: verificar si este celular ya envió hoy ────────
-window.addEventListener("DOMContentLoaded", () => {
-  if (yaEnvioEsteCelular()) {
-    document.getElementById("formWrap").style.display = "none";
-    const g = document.getElementById("gracias");
-    g.style.display = "block";
-    g.querySelector(".ico").textContent = "✅";
-    g.querySelector("h2").textContent = "Ya registrado";
-    g.querySelector("h2").style.color = "#1565c0";
-    document.getElementById("graciasMsg").innerHTML =
-      "Este celular ya tiene un registro para hoy.<br>Si cree que es un error, consulte al tecnólogo médico.";
+window.addEventListener("DOMContentLoaded",()=>{
+  if(yaEnvioHoy()){
+    document.getElementById("formMain").style.display="none";
+    const g=document.getElementById("gracias"); g.style.display="block";
+    g.querySelector(".ico").textContent="✅";
+    g.querySelector("h2").textContent="Ya registrado";
+    g.querySelector("h2").style.color="#1565c0";
+    document.getElementById("graciasMsg").innerHTML="Este celular ya tiene un registro para hoy.<br>Si cree que es un error, consulte al tecnólogo médico.";
   }
 });
 
-// ── Enviar formulario ────────────────────────────────────────
-async function enviar() {
-  const btn = document.getElementById("btnEnviar");
-  const spinner = document.getElementById("spinner");
+function mayus(el){el.value=el.value.toUpperCase()}
+function tog(name,detId){
+  const v=document.querySelector(`input[name="${name}"]:checked`)?.value;
+  document.getElementById(detId)?.classList.toggle("on",v==="Sí");
+}
+function togOtro(selId,detId){
+  document.getElementById(detId)?.classList.toggle("on",document.getElementById(selId).value==="Otros");
+}
+function toggleFem(){
+  document.getElementById("secFem").style.display=document.getElementById("sexo").value==="Femenino"?"block":"none";
+}
+function togRep(){
+  const v=document.querySelector('input[name="tipo"]:checked')?.value;
+  document.getElementById("secRep").classList.toggle("on",v==="Reposición");
+}
+function radio(n){return document.querySelector(`input[name="${n}"]:checked`)?.value||"No"}
+function val(id){return(document.getElementById(id)?.value||"").trim()}
+function showMsg(type,txt){
+  document.getElementById("msgErr").style.display="none";
+  document.getElementById("msgWarn").style.display="none";
+  const el=document.getElementById(type==="error"?"msgErr":"msgWarn");
+  el.textContent=txt; el.style.display="block";
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+}
 
-  // Validación
-  const nombres   = val("nombres");
-  const apellidos = val("apellidos");
-  const dni       = val("dni");
-  const edad      = val("edad");
-  const sexo      = document.getElementById("sexo").value;
+async function dniDuplicado(dni){
+  const hoy=new Date().toISOString().split("T")[0];
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/donantes_cloud?dni=eq.${dni}&fecha_registro=gte.${hoy}T00:00:00&select=id`,
+      {headers:{"apikey":SB_KEY,"Authorization":"Bearer "+SB_KEY}});
+    const d=await r.json();
+    return Array.isArray(d)&&d.length>0;
+  }catch{return false}
+}
 
-  const errores = [];
-  if (!nombres)                          errores.push("• Nombres completos es obligatorio");
-  if (!apellidos)                        errores.push("• Apellidos es obligatorio");
-  if (!dni || dni.length !== 8 || isNaN(dni)) errores.push("• DNI debe tener exactamente 8 dígitos numéricos");
-  if (!edad || edad < 18 || edad > 65)   errores.push("• Edad debe estar entre 18 y 65 años");
-  if (!sexo)                             errores.push("• Sexo es obligatorio");
+async function enviar(){
+  const nombres=val("nombres"), apellidos=val("apellidos"), dni=val("dni"),
+        edad=val("edad"), sexo=document.getElementById("sexo").value;
+  const errs=[];
+  if(!nombres)   errs.push("• Nombres completos es obligatorio");
+  if(!apellidos) errs.push("• Apellidos es obligatorio");
+  if(!dni||dni.length!==8||isNaN(dni)) errs.push("• DNI debe tener exactamente 8 dígitos numéricos");
+  if(!edad||+edad<18||+edad>65) errs.push("• Edad debe estar entre 18 y 65 años");
+  if(!sexo) errs.push("• Sexo es obligatorio");
+  if(errs.length){showMsg("error",errs.join("\n"));return}
 
-  if (errores.length) { showMsg("error", errores.join("\n")); return; }
+  const btn=document.getElementById("btnEnv"), spin=document.getElementById("spin");
+  btn.disabled=true; spin.style.display="block";
 
-  // Deshabilitar botón
-  btn.disabled = true;
-  spinner.style.display = "block";
-
-  // Verificar duplicado
-  const duplicado = await yaEnvioHoy(dni);
-  if (duplicado) {
-    showMsg("warn", `⚠️ El DNI ${dni} ya tiene un registro hoy. Si es un error, consulte al personal del banco de sangre.`);
-    btn.disabled = false; spinner.style.display = "none";
-    return;
+  if(await dniDuplicado(dni)){
+    showMsg("warn",`⚠️ El DNI ${dni} ya tiene un registro hoy. Si es un error, consulte al personal.`);
+    btn.disabled=false; spin.style.display="none"; return;
   }
 
-  // Construir respuestas del cuestionario (mismo JSON que el formulario Streamlit)
-  const resp = {
-    q1:  radio("q1"),
-    q2:  radio("q2"),
-    q3:  radio("q3"),
-    q5:  radio("q5"),
-    q6:  radio("q6"),
-    q8:  radio("q8"),
-    q9:  radio("q9"),
-    q10: radio("q10"),
-    q11: radio("q11"),
-    q12: radio("q12"),
-    q13: radio("q13"),
-    q14: radio("q14"),
-    q15: radio("q15"),
-    q16: radio("q16"),
-    q17: radio("q17"),
-    q18: radio("q18"),
-    q19: radio("q19"),
-    q20: radio("q20"),
+  // Construir JSON de respuestas (mismo formato que el sistema principal)
+  const resp={
+    q1:radio("q1"), q2:radio("q2"), q3:radio("q3"), q5:radio("q5"), q6:radio("q6"),
+    q8:radio("q8"), q9:radio("q9"), q10:radio("q10"), q11:radio("q11"), q12:radio("q12"),
+    q13:radio("q13"), q14:radio("q14"), q15:radio("q15"), q16:radio("q16"), q17:radio("q17"),
+    q18:radio("q18"), q19:radio("q19"), q20:radio("q20"), q21:radio("q21"), q22:radio("q22"),
+    q23:radio("q23"), q24:radio("q24"), q25:radio("q25"),
   };
   // Detalles condicionales
-  if (resp.q1  === "Sí") resp.q1_detalle  = val("q1_det");
-  if (resp.q3  === "Sí") resp.q3_detalle  = val("q3_det");
-  if (resp.q8  === "Sí") resp.q8_detalle  = val("q8_det");
-  if (resp.q9  === "Sí") resp.q9_detalle  = val("q9_det");
-  if (resp.q10 === "Sí") resp.q10_detalle = val("q10_det");
-  if (resp.q11 === "Sí") resp.q11_detalle = val("q11_det");
-  if (resp.q12 === "Sí") resp.q12_detalle = val("q12_det");
-  if (resp.q13 === "Sí") resp.q13_detalle = val("q13_det");
-  if (resp.q14 === "Sí") resp.q14_detalle = val("q14_det");
-  if (resp.q16 === "Sí") resp.q16_detalle = val("q16_det");
-  // Preguntas femeninas
-  if (sexo === "Femenino") {
-    resp.q4 = val("q4_fecha") || "No indicada";
-    resp.q7 = radio("q7");
-  } else {
-    resp.q4 = "N/A"; resp.q7 = "N/A";
-  }
+  if(resp.q1 ==="Sí") resp.q1_detalle =val("q1d");
+  if(resp.q3 ==="Sí") resp.q3_detalle =val("q3d");
+  if(resp.q8 ==="Sí") resp.q8_detalle =val("q8d");
+  if(resp.q9 ==="Sí") resp.q9_detalle =val("q9d");
+  if(resp.q10==="Sí") resp.q10_detalle=val("q10d");
+  if(resp.q11==="Sí") resp.q11_detalle=val("q11d");
+  if(resp.q12==="Sí") resp.q12_detalle=val("q12d");
+  if(resp.q13==="Sí") resp.q13_detalle=val("q13d");
+  if(resp.q14==="Sí") resp.q14_detalle=val("q14d");
+  if(resp.q15==="Sí") resp.q15_detalle=val("q15d");
+  if(resp.q16==="Sí") resp.q16_detalle=val("q16d");
+  if(resp.q17==="Sí") resp.q17_detalle=val("q17d");
+  if(resp.q22==="Sí") resp.q22_detalle=val("q22d");
+  if(resp.q23==="Sí") resp.q23_detalle=val("q23d");
+  if(resp.q24==="Sí") resp.q24_detalle=val("q24d");
+  if(resp.q25==="Sí") resp.q25_detalle=val("q25d");
+  // Femenino
+  if(sexo==="Femenino"){resp.q4=val("q4_fecha")||"No indicada"; resp.q7=radio("q7")}
+  else{resp.q4="N/A"; resp.q7="N/A"}
 
-  // Ocupación y centro de trabajo
-  const ocupacion_op  = document.getElementById("ocupacion_op").value;
-  const ocupacion     = ocupacion_op === "Otros" ? val("ocupacion_otro_val") : ocupacion_op;
-  const centro_op     = document.getElementById("centro_op").value;
-  const centro        = centro_op    === "Otros" ? val("centro_otro_val")    : centro_op;
+  const ocup_op=document.getElementById("ocup_op").value;
+  const ctrab_op=document.getElementById("ctrab_op").value;
+  const tipo=radio("tipo");
 
-  // Tipo donación y receptor
-  const tipo_donacion = radio("tipo_donacion");
-  const rec_nom = tipo_donacion === "Reposición" ? val("rec_nom") : "";
-  const rec_ape = tipo_donacion === "Reposición" ? val("rec_ape") : "";
-  const rec_dni = tipo_donacion === "Reposición" ? val("rec_dni") : "";
-
-  const registro = {
-    nombres:                 nombres,
-    apellidos:               apellidos,
-    dni:                     dni,
-    edad:                    parseInt(edad),
-    sexo:                    sexo,
-    estado_civil:            document.getElementById("estado_civil").value,
-    grado_instruccion:       document.getElementById("grado_instruccion").value,
-    lugar_nacimiento:        document.getElementById("lugar_nacimiento").value,
-    fecha_nacimiento:        val("fecha_nacimiento") || null,
-    domicilio:               val("domicilio"),
-    celular:                 val("celular"),
-    ocupacion:               ocupacion,
-    centro_trabajo:          centro,
-    tipo_donacion:           tipo_donacion,
-    receptor_nombres:        rec_nom,
-    receptor_apellidos:      rec_ape,
-    receptor_dni:            rec_dni,
-    respuestas_cuestionario: JSON.stringify(resp),
-    sincronizado:            false,
-    campania_id:             campaniaId,
+  const reg={
+    nombres, apellidos, dni, edad:+edad, sexo,
+    estado_civil:document.getElementById("est_civil").value,
+    grado_instruccion:document.getElementById("grado").value,
+    lugar_nacimiento:document.getElementById("lugar_nac").value,
+    fecha_nacimiento:val("fec_nac")||null,
+    domicilio:val("domicilio"),
+    celular:val("celular"),
+    ocupacion:ocup_op==="Otros"?val("ocup_val"):ocup_op,
+    centro_trabajo:ctrab_op==="Otros"?val("ctrab_val"):ctrab_op,
+    tipo_donacion:tipo,
+    receptor_nombres:tipo==="Reposición"?val("rec_nom"):"",
+    receptor_apellidos:tipo==="Reposición"?val("rec_ape"):"",
+    receptor_dni:tipo==="Reposición"?val("rec_dni"):"",
+    respuestas_cuestionario:JSON.stringify(resp),
+    sincronizado:false,
+    campania_id:campId,
   };
 
-  try {
-    const r = await fetch(`${SB_URL}/rest/v1/donantes_cloud`, {
-      method: "POST",
-      headers: HEADERS,
-      body: JSON.stringify(registro)
-    });
-    if (r.ok || r.status === 201) {
-      marcarEnviado();  // bloquear reenvíos desde este celular
-      document.getElementById("formWrap").style.display = "none";
-      const gracias = document.getElementById("gracias");
-      gracias.style.display = "block";
-      if (campaniaId) {
-        document.getElementById("graciasMsg").innerHTML =
-          "¡Queda inscrito en la campaña de donación!<br>El tecnólogo médico lo atenderá en breve.<br><br>🩸 <b>¡Gracias por donar voluntariamente!</b>";
-      }
-    } else {
-      const err = await r.text();
-      showMsg("error", "Error al guardar. Intente de nuevo.\nDetalle: " + err);
-      btn.disabled = false; spinner.style.display = "none";
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/donantes_cloud`,{method:"POST",headers:HDR,body:JSON.stringify(reg)});
+    if(r.ok||r.status===201){
+      marcarEnviado();
+      document.getElementById("formMain").style.display="none";
+      const g=document.getElementById("gracias"); g.style.display="block";
+      if(campId) document.getElementById("graciasMsg").innerHTML="¡Queda inscrito en la campaña de donación!<br>El tecnólogo médico lo atenderá en breve.<br><br>🩸 <b>¡Gracias por donar voluntariamente!</b>";
+    }else{
+      const e=await r.text();
+      showMsg("error","Error al guardar. Intente de nuevo.\n"+e);
+      btn.disabled=false; spin.style.display="none";
     }
-  } catch (e) {
-    showMsg("error", "Error de conexión. Verifique su internet e intente de nuevo.");
-    btn.disabled = false; spinner.style.display = "none";
+  }catch(e){
+    showMsg("error","Error de conexión. Verifique su internet e intente de nuevo.");
+    btn.disabled=false; spin.style.display="none";
   }
 }
 </script>
